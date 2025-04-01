@@ -159,7 +159,7 @@ export default function Quiz() {
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-pink-500/75 drop-shadow-2xl">
                   Conhecimento sobre Armazenamento e Descarte de Agentes Biológicos e Químicos
                 </h1>
-                <Button onClick={() => setStep(1)} className="mt-4 px-4 bg-pink-500/70 w-full text-white text-lg font-semibold py-2">
+                <Button onClick={() => setStep(1)} className="mt-4 px-4 bg-pink-500/70 hover:bg-pink-600/75 cursor-pointer w-full text-white text-lg font-semibold py-2">
                   Iniciar Quiz
                 </Button>
               </div>
@@ -203,7 +203,7 @@ export default function Quiz() {
                 <p className="mb-6 text-base sm:text-lg md:text-xl text-pink-500/75">
                   Porcentagem de acertos: {((score / totalQuestions) * 100).toFixed(2)}%
                 </p>
-                <Button onClick={handleReset} className="px-4 py-2">
+                <Button onClick={handleReset} className="mt-4 px-4 bg-pink-500/70 hover:bg-pink-600/75 cursor-pointer w-full text-white text-lg font-semibold py-2">
                   Reiniciar Quiz
                 </Button>
               </div>
