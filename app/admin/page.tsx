@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { toast, ToastContainer } from "react-toastify";
 
 interface QuizResult {
   id: string;
@@ -23,7 +24,7 @@ export default function AdminPage() {
     if (username === "yasmin" && password === "#yasmin123") {
       setIsAuthenticated(true);
     } else {
-      alert("Login incorreto!");
+      toast.error("Login incorreto!");
     }
   };
 
@@ -91,6 +92,7 @@ export default function AdminPage() {
           </table>
         </div>
       </div>
+      <ToastContainer theme="colored" autoClose={2000} />
     </div>
   );
 }

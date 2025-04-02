@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/supabaseClient';
+import { toast, ToastContainer } from 'react-toastify';
 
 interface QuizQuestion {
   question: string;
@@ -140,9 +141,9 @@ export default function Quiz() {
     ]);
     setIsSubmitting(false);
     if (error) {
-      alert("Erro ao salvar resultado.");
+      toast.error("Erro ao salvar resultado.");
     } else {
-      alert("Resultado salvo com sucesso!");
+      toast.success("Resultado salvo com sucesso!");
       setStep(0);
       setScore(0);
       setName("");
@@ -154,56 +155,81 @@ export default function Quiz() {
       <div className="w-full max-w-3xl p-8">
         <AnimatePresence mode="wait">
           {step === 0 && (
-            <div className="text-center">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-pink-500/75 drop-shadow-2xl">
-                Conhecimento sobre Armazenamento e Descarte de Agentes Biológicos e Químicos
-              </h1>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Digite seu nome"
-                className="border border-pink-500/75 p-2 rounded w-full"
-              />
-              <Button onClick={() => name ? setStep(1) : alert("Digite seu nome!")} className="mt-4 px-4 bg-pink-500/70 hover:bg-pink-600/75 cursor-pointer w-full text-white text-lg font-semibold py-2">
-                Começar
-              </Button>
-            </div>
+            <motion.div
+              key="start"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="text-center"
+            >
+              <div className="text-center">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-pink-500/75 drop-shadow-2xl">
+                  Conhecimento sobre Armazenamento e Descarte de Agentes Biológicos e Químicos
+                </h1>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Digite seu nome"
+                  className="border border-pink-500/75 p-2 rounded w-full"
+                />
+                <Button onClick={() => name ? setStep(1) : alert("Digite seu nome!")} className="mt-4 px-4 bg-pink-500/70 hover:bg-pink-600/75 cursor-pointer w-full text-white text-lg font-semibold py-2">
+                  Começar
+                </Button>
+              </div>
+            </motion.div>
           )}
 
           {step > 0 && step <= totalQuestions && (
-            <div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 text-pink-500/75">Pergunta {step} de {totalQuestions}</h2>
-              <p className="mb-4 text-base sm:text-lg md:text-xl text-pink-500/75">{quizData[step - 1].question}</p>
-              <div className="grid grid-cols-1 gap-4">
-                {quizData[step - 1].options.map((option, index) => (
-                  <Button key={index} onClick={() => handleAnswer(option)} variant="outline" className="w-full min-h-[65px] cursor-pointer text-sm sm:text-base md:text-lg p-2 text-pink-500/75 px-4 py-2 whitespace-normal break-words text-center">
-                    {option}
-                  </Button>
-                ))}
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              className="text-center"
+            >
+              <div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 text-pink-500/75">Pergunta {step} de {totalQuestions}</h2>
+                <p className="mb-4 text-base sm:text-lg md:text-xl text-pink-500/75">{quizData[step - 1].question}</p>
+                <div className="grid grid-cols-1 gap-4">
+                  {quizData[step - 1].options.map((option, index) => (
+                    <Button key={index} onClick={() => handleAnswer(option)} variant="outline" className="w-full min-h-[65px] cursor-pointer text-sm sm:text-base md:text-lg p-2 text-pink-500/75 px-4 py-2 whitespace-normal break-words text-center">
+                      {option}
+                    </Button>
+                  ))}
+                </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {step === totalQuestions + 1 && (
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-pink-500/75">Resultados</h2>
-              <p className="mb-2 text-base sm:text-lg md:text-xl text-pink-500/75">
-                Acertos: {score} de {totalQuestions}
-              </p>
-              <p className="mb-6 text-base sm:text-lg md:text-xl text-pink-500/75">
-                Erros: {totalQuestions - score} de {totalQuestions}
-              </p>
-              <p className="mb-6 text-base sm:text-lg md:text-xl text-pink-500/75">
-                Porcentagem de acertos: {((score / totalQuestions) * 100).toFixed(2)}%
-              </p>
-              <Button onClick={saveResult} disabled={isSubmitting} className="mt-4 px-4 bg-pink-500/70 hover:bg-pink-600/75 cursor-pointer max-w-52 text-white text-lg font-semibold py-2">
-                {isSubmitting ? "Salvando..." : "Enviar resultado"}
-              </Button>
-            </div>
+            <motion.div
+              key="result"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="text-center"
+            >
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-pink-500/75">Resultados</h2>
+                <p className="mb-2 text-base sm:text-lg md:text-xl text-pink-500/75">
+                  Acertos: {score} de {totalQuestions}
+                </p>
+                <p className="mb-6 text-base sm:text-lg md:text-xl text-pink-500/75">
+                  Erros: {totalQuestions - score} de {totalQuestions}
+                </p>
+                <p className="mb-6 text-base sm:text-lg md:text-xl text-pink-500/75">
+                  Porcentagem de acertos: {((score / totalQuestions) * 100).toFixed(2)}%
+                </p>
+                <Button onClick={saveResult} disabled={isSubmitting} className="mt-4 px-4 bg-pink-500/70 hover:bg-pink-600/75 cursor-pointer max-w-52 text-white text-lg font-semibold py-2">
+                  {isSubmitting ? "Salvando..." : "Enviar resultado"}
+                </Button>
+              </div>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>
+      <ToastContainer theme="colored" autoClose={2000} />
     </div>
   );
 }
